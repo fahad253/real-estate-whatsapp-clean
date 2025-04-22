@@ -94,19 +94,94 @@ const client = new Client({
             '--metrics-recording-only',
             '--mute-audio',
             '--no-default-browser-check',
+            '--start-maximized',
+            '--ignore-certificate-errors',
+            '--ignore-certificate-errors-spki-list',
+            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36',
             '--user-data-dir='
         ],
         defaultViewport: null,
-        protocolTimeout: 30000, // تقليل مهلة البروتوكول لاستجابة أسرع
+        protocolTimeout: 30000,
         ignoreDefaultArgs: ['--enable-automation'],
-        slowMo: 0, // تعطيل التأخير بين الإجراءات
+        slowMo: 0,
     },
-    qrMaxRetries: 3, // محاولات إعادة توليد رمز QR تلقائياً
-    qrTimeoutMs: 60000, // مهلة لرمز QR
-    takeoverOnConflict: true, // السماح بتجاوز الجلسة في حالة وجود تعارض
-    takeoverTimeoutMs: 10000 // مهلة محاولة تجاوز الجلسة
+    webVersion: '2.2417.7',
+    webVersionCache: {
+        type: 'local',
+    },
+    qrMaxRetries: 2,
+    qrTimeoutMs: 120000,
+    restartOnAuthFail: true,
+    takeoverOnConflict: true,
+    takeoverTimeoutMs: 10000,
+    bypassCSP: true
+});
+// معالجة الخروج من واتساب
+client.on('disconnected', async (reason) => {
+    console.log('🔌 انقطع الاتصال:', reason);
+    io.emit('disconnected', 'انقطع الاتصال بواتساب. جاري إعادة الاتصال...');
+    
+    serverStatus.isConnected = false;
+    serverStatus.lastUpdated = new Date();
+    serverStatus.lastMessage = reason;
+    
+    // إيقاف مؤقت قبل إعادة المحاولة
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    if (serverStatus.reconnectAttempts < serverStatus.maxReconnectAttempts) {
+        serverStatus.reconnectAttempts++;
+        console.log(`🔄 محاولة إعادة الاتصال ${serverStatus.reconnectAttempts}/${serverStatus.maxReconnectAttempts}`);
+        
+        try {
+            // مسح الملفات المؤقتة قبل إعادة المحاولة
+            const sessionFolderPath = path.join(newAuthPath, 'session-real-estate-client');
+            if (fs.existsSync(sessionFolderPath)) {
+                try {
+                    // حذف ملف السجل المشكل فقط (بدلاً من حذف المجلد بأكمله)
+                    const debugLogPath = path.join(sessionFolderPath, 'Default', 'chrome_debug.log');
+                    if (fs.existsSync(debugLogPath)) {
+                        fs.unlinkSync(debugLogPath);
+                    }
+                } catch (error) {
+                    console.warn('⚠️ لم نتمكن من حذف ملف السجل:', error.message);
+                }
+            }
+            
+            // إعادة تهيئة العميل
+            await client.initialize().catch(err => {
+                console.error('❌ خطأ أثناء إعادة تهيئة العميل:', err);
+            });
+        } catch (error) {
+            console.error('❌ خطأ خلال محاولة إعادة التهيئة:', error);
+        }
+    } else {
+        io.emit('reconnect_failed', 'فشلت جميع محاولات إعادة الاتصال. يرجى إعادة تشغيل الجلسة يدويًا.');
+    }
 });
 
+// معالجة فشل المصادقة
+client.on('auth_failure', async (msg) => {
+    console.error('❌ فشل المصادقة:', msg);
+    io.emit('auth_failure', 'فشل المصادقة، جاري إعادة التهيئة...');
+    
+    // إيقاف مؤقت قبل إعادة المحاولة
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    try {
+        await client.initialize().catch(err => {
+            console.error('❌ خطأ أثناء إعادة تهيئة العميل بعد فشل المصادقة:', err);
+        });
+    } catch (error) {
+        console.error('❌ خطأ خلال محاولة إعادة التهيئة بعد فشل المصادقة:', error);
+    }
+});
+// حفظ حالة الجلسة بشكل دوري
+setInterval(() => {
+    if (serverStatus.isConnected) {
+        console.log('💾 حفظ حالة الجلسة...');
+        saveOffersToDatabase();
+    }
+}, 300000); // كل 5 دقائق
 // قائمة لحفظ الرسائل العقارية
 let realEstateOffers = [];
 let messageStats = { total: 0, sale: 0, rent: 0, phone: 0 };
@@ -1080,7 +1155,55 @@ app.get('/export', (req, res) => {
         res.status(500).send('حدث خطأ أثناء تصدير العروض: ' + error.message);
     }
 });
+// نقطة نهاية للتحقق من حالة الاتصال
+app.get('/api/connection-status', (req, res) => {
+    res.json({
+        isConnected: serverStatus.isConnected,
+        lastUpdated: serverStatus.lastUpdated,
+        lastMessage: serverStatus.lastMessage,
+        reconnectAttempts: serverStatus.reconnectAttempts
+    });
+});
 
+// نقطة نهاية لإعادة تشغيل الجلسة
+app.get('/api/restart-session', async (req, res) => {
+    try {
+        console.log('🔄 إعادة تشغيل الجلسة...');
+        
+        // إعادة تعيين عدد محاولات إعادة الاتصال
+        serverStatus.reconnectAttempts = 0;
+        
+        // محاولة تسجيل الخروج أولاً إذا كان متصلاً
+        if (serverStatus.isConnected) {
+            try {
+                await client.logout();
+            } catch (error) {
+                console.warn('⚠️ فشل تسجيل الخروج:', error.message);
+            }
+        }
+        
+        // إيقاف العميل
+        try {
+            await client.destroy();
+        } catch (error) {
+            console.warn('⚠️ فشل إيقاف العميل:', error.message);
+        }
+        
+        // إيقاف مؤقت
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // إعادة تهيئة العميل
+        client.initialize().catch(err => {
+            console.error('❌ خطأ أثناء إعادة تهيئة العميل:', err);
+            res.json({ success: false, error: err.message });
+        });
+        
+        res.json({ success: true, message: 'تم إعادة تشغيل الجلسة بنجاح' });
+    } catch (error) {
+        console.error('❌ خطأ في إعادة تشغيل الجلسة:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 // نقطة نهاية للتحقق من وجود ملف التصدير
 app.get('/check-export-file', (req, res) => {
     const fileName = req.query.filtered === 'true' ? 'عروض_عقارية_مصفاة.xlsx' : 'عروض_عقارية.xlsx';
