@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جامع عروض العقارات من واتساب</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #1e1e2f;
+      --text: #fff;
+      --primary: #25D366;
+      --secondary: #128C7E;
+      --danger: #e74c3c;
+      --info: #3498db;
+      --warning: #f39c12;
+      --success: #2ecc71;
+      --card-bg: #2a2a3d;
+      --header-bg: #1a1a2a;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f5f5;
+        --text: #333;
+        --card-bg: #ffffff;
+        --header-bg: #e8e8e8;
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: var(--header-bg);
+      padding: 20px 0;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    h1 {
+      color: var(--primary);
+      margin: 0;
+      font-size: 32px;
+      margin-bottom: 5px;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+    
+    #qrcode {
+      margin: 20px auto;
+      max-width: 300px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .qr-wrapper {
+      position: relative;
+    }
+    
+    .qr-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .whatsapp-logo {
+      font-size: 40px;
+      color: #25D366;
+    }
+    
+    .qr-actions {
+      margin: 15px auto;
+      text-align: center;
+    }
+    
+    .qr-btn {
+      background: linear-gradient(45deg, #128C7E, #25D366);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      margin: 0 auto;
+    }
+    
+    .qr-btn i {
+      margin-left: 8px;
+    }
+    
+    .qr-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .qr-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .qr-timer {
+      font-size: 12px;
+      color: var(--secondary);
+      margin-top: 5px;
+    }
+    
+    .btn {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn i {
+      margin-left: 8px;
+    }
+    
+    .btn:disabled {
+      background-color: #666;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    
+    .btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    #export-btn {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+    }
+    
+    .clear-btn {
+      background: var(--danger);
+    }
+    
+    .history-btn {
+      background: var(--info);
+    }
+    
+    .restart-btn {
+      background: var(--warning);
+    }
+    
+    .filter-btn {
+      background: var(--success);
+    }
+    
+    #status {
+      margin: 20px auto;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: rgba(42, 42, 61, 0.8);
+      color: #00e676;
+      font-size: 18px;
+      max-width: 700px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      max-width: 1000px;
+      gap: 15px;
+    }
+    
+    .stat-box {
+      flex: 1 1 200px;
+      margin: 5px;
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      min-width: 120px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .stat-title {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00e676;
+    }
+    
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 10px;
+    }
+    
+    .loading {
+      animation: spin 2s linear infinite;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background-color: var(--header-bg);
+      color: #aaa;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    /* رسالة تنبيه منبثقة */
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: #2ecc71;
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .alert.show {
+      transform: translateX(0);
+    }
+    
+    .alert.error {
+      background: var(--danger);
+    }
+    
+    .alert.warning {
+      background: var(--warning);
+    }
+    
+    .alert i {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+    
+    /* مربع حوار التصفية */
+    #filter-dialog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    #filter-dialog.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .dialog-content {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+    
+    #filter-dialog.show .dialog-content {
+      transform: translateY(0);
+    }
+    
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .dialog-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+      text-align: right;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+    
+    .dialog-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    
+    .filter-apply-btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .filter-reset-btn {
+      background: var(--danger);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    /* إضافات جديدة - إحصاءات إضافية */
+    .stats-extended {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px auto;
+      max-width: 1000px;
+    }
+    
+    .chart-container {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      margin: 20px auto;
+      max-width: 1000px;
+    }
+    
+    .connection-status {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--danger);
+      margin-left: 5px;
+    }
+    
+    .connection-status.connected {
+      background-color: var(--success);
+    }
+    
+    .recent-offers {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 1000px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .recent-offers h3 {
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+    
+    .offer-item {
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: right;
+      transition: transform 0.2s ease;
+    }
+    
+    .offer-item:hover {
+      transform: translateX(-5px);
+    }
+    
+    .offer-type {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    
+    .offer-type.sale {
+      background-color: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+    }
+    
+    .offer-type.rent {
+      background-color: rgba(52, 152, 219, 0.2);
+      color: #3498db;
+    }
+    
+    .offer-type.buy {
+      background-color: rgba(243, 156, 18, 0.2);
+      color: #f39c12;
+    }
+    
+    .offer-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    
+    .offer-detail {
+      font-size: 12px;
+      color: #aaa;
+    }
+    
+    .offer-detail i {
+      margin-left: 3px;
+    }
+    
+    .tab-container {
+      margin: 20px 0;
+    }
+    
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      opacity: 0.6;
+      transition: opacity 0.3s ease, border-bottom 0.3s ease;
+      position: relative;
+      font-weight: bold;
+    }
+    
+    .tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .tab.active {
+      opacity: 1;
+    }
+    
+    .tab.active::after {
+      transform: scaleX(1);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .stat-box {
+        flex: 1 1 40%;
+      }
+      
+      .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 24px;
+      }
+      
+      .stat-box {
+        flex: 1 1 100%;
+      }
+      
+      .btn-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>جامع عروض العقارات من واتساب</h1>
+      <p class="subtitle">استخراج وتحليل عروض العقارات من مجموعات واتساب بشكل تلقائي</p>
+      <div class="connection-indicator">
+        <span>حالة الاتصال: </span>
+        <span id="connection-text">غير متصل</span>
+        <span class="connection-status" id="connection-status"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="status">بانتظار توليد رمز QR...</div>
+    <div id="qrcode"></div>
+    <div class="qr-actions">
+      <button id="regenerate-qr-btn" class="qr-btn" disabled>
+        <i class="fas fa-sync-alt"></i> إعادة توليد رمز QR
+      </button>
+      <div id="qr-timer" class="qr-timer"></div>
+    </div>
+
+    <div class="tab-container">
+      <div class="tabs">
+        <button class="tab active" data-tab="stats">الإحصائيات</button>
+        <button class="tab" data-tab="recent">أحدث العروض</button>
+        <button class="tab" data-tab="charts">الرسوم البيانية</button>
+      </div>
+      
+      <div id="stats-tab" class="tab-content active">
+        <div class="stats">
+          <div class="stat-box">
+            <div class="stat-title">إجمالي العروض</div>
+            <div class="stat-value" id="total-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">عروض البيع</div>
+            <div class="stat-value" id="sale-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">عروض الإيجار</div>
+            <div class="stat-value" id="rent-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">أرقام هاتف</div>
+            <div class="stat-value" id="phone-count">0</div>
+          </div>
+        </div>
+        
+        <div class="stats-extended">
+          <div class="stat-box">
+            <div class="stat-title">الشقق</div>
+            <div class="stat-value" id="apartment-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">الفلل</div>
+            <div class="stat-value" id="villa-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">الأراضي</div>
+            <div class="stat-value" id="land-count">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-title">المجموعات النشطة</div>
+            <div class="stat-value" id="active-groups">0</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="recent-tab" class="tab-content">
+        <div class="recent-offers">
+          <h3>أحدث العروض العقارية</h3>
+          <div id="recent-offers-list">
+            <div class="loading"></div> جاري تحميل أحدث العروض...
+          </div>
+        </div>
+      </div>
+      
+      <div id="charts-tab" class="tab-content">
+        <div class="chart-container">
+          <h3>توزيع العروض حسب النوع</h3>
+          <canvas id="offers-chart" width="400" height="300"></canvas>
+        </div>
+        
+        <div class="chart-container">
+          <h3>توزيع أنواع العقارات</h3>
+          <canvas id="property-chart" width="400" height="300"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-container">
+      <button id="export-btn" class="btn" disabled><i class="fas fa-file-export"></i> تصدير كل العروض</button>
+      <button id="filter-btn" class="btn filter-btn"><i class="fas fa-filter"></i> تصفية العروض</button>
+      <button id="clear-btn" class="btn clear-btn" disabled><i class="fas fa-trash-alt"></i> مسح العروض</button>
+      <button id="history-btn" class="btn history-btn"><i class="fas fa-history"></i> فحص الرسائل السابقة</button>
+      <button id="restart-btn" class="btn restart-btn"><i class="fas fa-sync"></i> إعادة الاتصال</button>
+    </div>
+  </div>
+
+  <!-- مربع حوار التصفية -->
+  <div id="filter-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div class="dialog-title">تصفية العروض</div>
+        <button class="close-btn" id="close-dialog"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="dialog-body">
+        <form id="filter-form">
+          <div class="form-group">
+            <label for="offer-type">نوع العرض</label>
+            <select id="offer-type" class="form-control">
+              <option value="">الكل</option>
+              <option value="بيع">بيع</option>
+              <option value="إيجار">إيجار</option>
+              <option value="شراء">شراء</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="property-type">نوع العقار</label>
+            <select id="property-type" class="form-control">
+              <option value="">الكل</option>
+              <option value="شقة">شقة</option>
+              <option value="فيلا">فيلا</option>
+              <option value="أرض">أرض</option>
+              <option value="عمارة">عمارة</option>
+              <option value="محل تجاري">محل تجاري</option>
+              <option value="مكتب">مكتب</option>
+              <option value="استراحة">استراحة</option>
+              <option value="مستودع">مستودع</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="location">الموقع</label>
+            <input type="text" id="location" class="form-control" placeholder="أدخل الموقع للبحث">
+          </div>
+          <div class="form-group">
+            <label for="min-price">السعر الأدنى</label>
+            <input type="number" id="min-price" class="form-control" placeholder="أدخل السعر الأدنى">
+          </div>
+          <div class="form-group">
+            <label for="max-price">السعر الأقصى</label>
+            <input type="number" id="max-price" class="form-control" placeholder="أدخل السعر الأقصى">
+          </div>
+        </form>
+      </div>
+      <div class="dialog-footer">
+        <button class="filter-apply-btn" id="apply-filter">تطبيق التصفية</button>
+        <button class="filter-reset-btn" id="reset-filter">إعادة تعيين</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- رسالة تنبيه منبثقة -->
+  <div class="alert" id="alert">
+    <i class="fas fa-check-circle"></i>
+    <span id="alert-message"></span>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>جميع الحقوق محفوظة © مجموعة Hypy.net 2025</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chart.js/4.4.2/chart.umd.min.js"></script>
+  <script>
+    const socket = io();
+    let messageCount = { total: 0, sale: 0, rent: 0, phone: 0 };
+    let propertyTypeCount = { 'شقة': 0, 'فيلا': 0, 'أرض': 0, 'عمارة': 0, 'محل تجاري': 0, 'مكتب': 0, 'استراحة': 0, 'مستودع': 0 };
+    let activeGroups = 0;
+    let offersChart, propertyChart;
+    let isConnected = false;
+    let qrCodeExpiration = null;
+    let qrCodeTimerInterval = null;
+    
+    // تعيين النافذة النشطة
+    function setActiveTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.getElementById(tabId + '-tab').classList.add('active');
+      document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+      
+      // تحديث الرسوم البيانية إذا كانت النافذة النشطة هي الرسوم البيانية
+      if (tabId === 'charts' && messageCount.total > 0) {
+        updateCharts();
+      }
+      
+      // تحميل أحدث العروض إذا كانت النافذة النشطة هي أحدث العروض
+      if (tabId === 'recent' && messageCount.total > 0) {
+        loadRecentOffers();
+      }
+    }
+    
+    // تحميل أحدث العروض
+    function loadRecentOffers() {
+      const recentList = document.getElementById('recent-offers-list');
+      
+      if (messageCount.total === 0) {
+        recentList.innerHTML = '<p>لا توجد عروض عقارية بعد</p>';
+        return;
+      }
+      
+      recentList.innerHTML = '<div class="loading"></div> جاري تحميل أحدث العروض...';
+      
+      fetch('/api/offers?limit=10')
+        .then(response => response.json())
+        .then(data => {
+          if (data.length === 0) {
+            recentList.innerHTML = '<p>لا توجد عروض عقارية بعد</p>';
+            return;
+          }
+          
+          let html = '';
+          data.forEach(offer => {
+            const offerTypeClass = offer["نوع العرض"] === 'بيع' ? 'sale' : 
+                                  offer["نوع العرض"] === 'إيجار' ? 'rent' : 'buy';
+            
+            html += `
+              <div class="offer-item">
+                <span class="offer-type ${offerTypeClass}">${offer["نوع العرض"]}</span>
+                <span>${offer["نوع العقار"]}</span>
+                <div class="offer-details">
+                  <span class="offer-detail"><i class="fas fa-map-marker-alt"></i> ${offer["الموقع"]}</span>
+                  <span class="offer-detail"><i class="fas fa-ruler-combined"></i> ${offer["المساحة"]}</span>
+                  <span class="offer-detail"><i class="fas fa-tag"></i> ${offer["السعر"]}</span>
+                  <span class="offer-detail"><i class="fas fa-phone"></i> ${offer["رقم الهاتف"]}</span>
+                  <span class="offer-detail"><i class="fas fa-clock"></i> ${offer["التاريخ"]}</span>
+                </div>
+              </div>
+            `;
+          });
+          
+          recentList.innerHTML = html;
+        })
+        .catch(error => {
+          console.error('خطأ في تحميل أحدث العروض:', error);
+          recentList.innerHTML = '<p>حدث خطأ أثناء تحميل أحدث العروض</p>';
+        });
+    }
+    
+    // تحديث الرسوم البيانية
+    function updateCharts() {
+      if (offersChart) offersChart.destroy();
+      if (propertyChart) propertyChart.destroy();
+      
+      // رسم بياني لتوزيع العروض
+      const offersCtx = document.getElementById('offers-chart').getContext('2d');
+      offersChart = new Chart(offersCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['عروض البيع', 'عروض الإيجار', 'أخرى'],
+          datasets: [{
+            label: 'توزيع العروض',
+            data: [
+              messageCount.sale, 
+              messageCount.rent, 
+              messageCount.total - messageCount.sale - messageCount.rent
+            ],
+            backgroundColor: [
+              'rgba(46, 204, 113, 0.7)',
+              'rgba(52, 152, 219, 0.7)',
+              'rgba(243, 156, 18, 0.7)'
+            ],
+            borderColor: [
+              'rgba(46, 204, 113, 1)',
+              'rgba(52, 152, 219, 1)',
+              'rgba(243, 156, 18, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--text')
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)'
+            }
+          }
+        }
+      });
+      
+      // رسم بياني لأنواع العقارات
+      const propertyCtx = document.getElementById('property-chart').getContext('2d');
+      
+      // استخراج البيانات من propertyTypeCount
+      const propertyLabels = [];
+      const propertyData = [];
+      const propertyColors = [
+        'rgba(46, 204, 113, 0.7)',
+        'rgba(52, 152, 219, 0.7)',
+        'rgba(243, 156, 18, 0.7)',
+        'rgba(155, 89, 182, 0.7)',
+        'rgba(231, 76, 60, 0.7)',
+        'rgba(230, 126, 34, 0.7)',
+        'rgba(41, 128, 185, 0.7)',
+        'rgba(39, 174, 96, 0.7)'
+      ];
+      
+      // تجميع البيانات لأنواع العقارات
+      for (const [type, count] of Object.entries(propertyTypeCount)) {
+        if (count > 0) {
+          propertyLabels.push(type);
+          propertyData.push(count);
+        }
+      }
+      
+      propertyChart = new Chart(propertyCtx, {
+        type: 'pie',
+        data: {
+          labels: propertyLabels,
+          datasets: [{
+            label: 'أنواع العقارات',
+            data: propertyData,
+            backgroundColor: propertyColors.slice(0, propertyLabels.length),
+            borderColor: propertyColors.map(color => color.replace('0.7', '1')),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--text')
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)'
+            }
+          }
+        }
+      });
+    }
+    
+    // دالة لبدء مؤقت صلاحية رمز QR
+    function startQRCodeTimer() {
+      // تعيين وقت انتهاء الصلاحية (بعد دقيقتين من الآن)
+      qrCodeExpiration = new Date();
+      qrCodeExpiration.setMinutes(qrCodeExpiration.getMinutes() + 2);
+      
+      // مسح أي مؤقت سابق
+      if (qrCodeTimerInterval) {
+        clearInterval(qrCodeTimerInterval);
+      }
+      
+      // تحديث المؤقت كل ثانية
+      qrCodeTimerInterval = setInterval(updateQRCodeTimer, 1000);
+      updateQRCodeTimer();
+      
+      // تمكين زر إعادة التوليد بعد 10 ثوانٍ
+      setTimeout(() => {
+        document.getElementById('regenerate-qr-btn').disabled = false;
+      }, 10000);
+    }
+    
+    // تحديث عرض مؤقت صلاحية رمز QR
+    function updateQRCodeTimer() {
+      if (!qrCodeExpiration || isConnected) {
+        if (qrCodeTimerInterval) {
+          clearInterval(qrCodeTimerInterval);
+          qrCodeTimerInterval = null;
+        }
+        document.getElementById('qr-timer').textContent = '';
+        return;
+      }
+      
+      const now = new Date();
+      const timeDiff = qrCodeExpiration - now;
+      
+      if (timeDiff <= 0) {
+        // انتهت صلاحية الرمز
+        clearInterval(qrCodeTimerInterval);
+        document.getElementById('qr-timer').textContent = 'انتهت صلاحية رمز QR';
+        document.getElementById('qr-timer').classList.add('pulse');
+        document.getElementById('status').textContent = 'انتهت صلاحية رمز QR. انقر على زر "إعادة توليد" للحصول على رمز جديد.';
+        document.getElementById('qrcode').innerHTML = `
+          <div style="padding: 20px; text-align: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            <p style="margin-top: 10px; color: #ff6b6b;">انتهت صلاحية رمز QR</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // حساب الدقائق والثواني المتبقية
+      const minutes = Math.floor(timeDiff / 60000);
+      const seconds = Math.floor((timeDiff % 60000) / 1000);
+      
+      // عرض الوقت المتبقي
+      document.getElementById('qr-timer').textContent = `الصلاحية: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      
+      // إضافة تنبيه مرئي عندما يتبقى أقل من 30 ثانية
+      if (timeDiff < 30000) {
+        document.getElementById('qr-timer').classList.add('pulse');
+      } else {
+        document.getElementById('qr-timer').classList.remove('pulse');
+      }
+    }
+    
+    // دالة إعادة توليد رمز QR
+    function regenerateQR() {
+      document.getElementById('status').innerHTML = '<div class="loading"></div> جاري إعادة توليد رمز QR...';
+      document.getElementById('regenerate-qr-btn').disabled = true;
+      document.getElementById('qr-timer').textContent = '';
+      document.getElementById('qr-timer').classList.remove('pulse');
+      
+      fetch('/api/regenerate-qr')
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            showAlert(data.error, 'error');
+            document.getElementById('status').textContent = 'فشل في إعادة توليد رمز QR';
+            document.getElementById('regenerate-qr-btn').disabled = false;
+          }
+        })
+        .catch(err => {
+          showAlert('حدث خطأ أثناء إعادة توليد رمز QR', 'error');
+          document.getElementById('status').textContent = 'فشل في إعادة توليد رمز QR';
+          document.getElementById('regenerate-qr-btn').disabled = false;
+          console.error(err);
+        });
+    }
+    
+    // استعلام من الخادم لحالة QR مباشرة
+    function checkDirectQR() {
+      if (!isConnected && !document.getElementById('qrcode').innerHTML.includes('img')) {
+        fetch('/api/get-qr')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.qrData) {
+              // عرض رمز QR
+              const qrContainer = document.getElementById('qrcode');
+              qrContainer.innerHTML = `
+                <div class="qr-wrapper">
+                  <img src="${data.qrData}" alt="QR Code" style="width:100%;">
+                  <div class="qr-overlay">
+                    <div class="whatsapp-logo">
+                      <i class="fab fa-whatsapp"></i>
+                    </div>
+                  </div>
+                </div>
+              `;
+              document.getElementById('status').textContent = 'الرجاء مسح رمز QR باستخدام واتساب';
+              
+              // بدء مؤقت الصلاحية
+              startQRCodeTimer();
+            }
+          })
+          .catch(err => console.error('خطأ في الحصول على رمز QR مباشرة:', err));
+      }
+    }
+    
+    // إظهار رسالة تنبيه
+    function showAlert(message, type = 'success') {
+      const alert = document.getElementById('alert');
+      const alertMessage = document.getElementById('alert-message');
+      
+      alertMessage.textContent = message;
+      alert.className = 'alert show';
+      
+      if (type === 'error') {
+        alert.classList.add('error');
+      } else if (type === 'warning') {
+        alert.classList.add('warning');
+      }
+      
+      setTimeout(() => {
+        alert.classList.remove('show');
+        setTimeout(() => {
+          alert.classList.remove('error', 'warning');
+        }, 300);
+      }, 3000);
+    }
+    
+    // تحديث حالة الاتصال
+    function updateConnectionStatus(connected) {
+      const statusElement = document.getElementById('connection-status');
+      const statusText = document.getElementById('connection-text');
+      
+      isConnected = connected;
+      
+      if (connected) {
+        statusElement.classList.add('connected');
+        statusText.textContent = 'متصل';
+        
+        // إيقاف مؤقت صلاحية رمز QR عند الاتصال
+        if (qrCodeTimerInterval) {
+          clearInterval(qrCodeTimerInterval);
+          qrCodeTimerInterval = null;
+        }
+        document.getElementById('qr-timer').textContent = '';
+        document.getElementById('regenerate-qr-btn').disabled = true;
+      } else {
+        statusElement.classList.remove('connected');
+        statusText.textContent = 'غير متصل';
+      }
+    }
+    
+    // تحديث عداد أنواع العقارات
+    function updatePropertyCounts() {
+      document.getElementById('apartment-count').textContent = propertyTypeCount['شقة'] || 0;
+      document.getElementById('villa-count').textContent = propertyTypeCount['فيلا'] || 0;
+      document.getElementById('land-count').textContent = propertyTypeCount['أرض'] || 0;
+      document.getElementById('active-groups').textContent = activeGroups;
+    }
+    
+    // استعلام عن إحصائيات أنواع العقارات
+    function fetchPropertyStats() {
+      fetch('/api/property-stats')
+        .then(response => response.json())
+        .then(data => {
+          propertyTypeCount = data.propertyTypes;
+          activeGroups = data.activeGroups || 0;
+          updatePropertyCounts();
+        })
+        .catch(error => {
+          console.error('خطأ في جلب إحصائيات العقارات:', error);
+        });
+    }
+    
+    // أحداث Socket.IO
+    socket.on('qr', (qrDataUrl) => {
+      document.getElementById('status').textContent = 'الرجاء مسح رمز QR باستخدام واتساب';
+      document.getElementById('qrcode').innerHTML = `
+        <div class="qr-wrapper">
+          <img src="${qrDataUrl}" alt="QR Code" style="width:100%;">
+          <div class="qr-overlay">
+            <div class="whatsapp-logo">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+          </div>
+        </div>
+      `;
+      updateConnectionStatus(false);
+      
+      // بدء مؤقت الصلاحية
+      startQRCodeTimer();
+    });
+
+    socket.on('loading', (data) => {
+      document.getElementById('status').innerHTML = `<div class="loading"></div> جاري التحميل: ${data.percent}% - ${data.message}`;
+    });
+
+    socket.on('ready', (message) => {
+      document.getElementById('status').textContent = message;
+      document.getElementById('qrcode').innerHTML =
+        '<div style="padding: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>';
+      updateConnectionStatus(true);
+      showAlert('تم الاتصال بواتساب بنجاح');
+      
+      // جلب إحصائيات العقارات بعد الاتصال
+      fetchPropertyStats();
+    });
+
+    socket.on('auth_failure', (message) => {
+      document.getElementById('status').textContent = message;
+      showAlert('فشل في المصادقة مع واتساب', 'error');
+      document.getElementById('regenerate-qr-btn').disabled = false;
+    });
+
+    socket.on('message_stats', (stats) => {
+      messageCount = stats;
+      document.getElementById('total-count').textContent = stats.total;
+      document.getElementById('sale-count').textContent = stats.sale;
+      document.getElementById('rent-count').textContent = stats.rent;
+      document.getElementById('phone-count').textContent = stats.phone;
+
+      document.getElementById('export-btn').disabled = stats.total === 0;
+      document.getElementById('clear-btn').disabled = stats.total === 0;
+      
+      // تحديث إحصائيات أنواع العقارات
+      fetchPropertyStats();
+    });
+
+    socket.on('disconnected', (message) => {
+      document.getElementById('status').textContent = message;
+      document.getElementById('qrcode').innerHTML =
+        '<div style="padding: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></div>';
+      updateConnectionStatus(false);
+      showAlert('انقطع الاتصال بواتساب', 'error');
+      
+      // تمكين زر إعادة توليد رمز QR
+      document.getElementById('regenerate-qr-btn').disabled = false;
+    });
+
+    socket.on('history_progress', (data) => {
+      document.getElementById('status').innerHTML = `<div class="loading"></div> جاري فحص المحفوظات: ${data.current} من ${data.total} مجموعة`;
+    });
+    
+    socket.on('new_offer', (offer) => {
+      // تحديث عداد نوع العقار
+      if (offer["نوع العقار"] in propertyTypeCount) {
+        propertyTypeCount[offer["نوع العقار"]]++;
+        updatePropertyCounts();
+      }
+      
+      // إذا كانت نافذة أحدث العروض نشطة، قم بتحديثها
+      if (document.getElementById('recent-tab').classList.contains('active')) {
+        loadRecentOffers();
+      }
+      
+      showAlert(`تم استلام عرض جديد: ${offer["نوع العرض"]} ${offer["نوع العقار"]} في ${offer["الموقع"]}`);
+    });
+    
+    // أحداث النقر
+    document.getElementById('export-btn').addEventListener('click', () => {
+    if (messageCount.total > 0) {
+        document.getElementById('status').innerHTML = '<div class="loading"></div> جاري تصدير العروض...';
+        
+        fetch('/check-export-file')
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    // الملف موجود بالفعل، استخدم مسار التنزيل المباشر
+                    const a = document.createElement('a');
+                    a.href = data.path;
+                    a.download = 'عروض_عقارية.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    
+                    document.getElementById('status').textContent = 'تم تنزيل العروض بنجاح';
+                    showAlert('تم تنزيل العروض بنجاح', 'success');
+                } else {
+                    // إنشاء ملف جديد
+                    fetch('/export')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('فشل في تصدير العروض');
+                            }
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'عروض_عقارية.xlsx';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(a);
+                            
+                            document.getElementById('status').textContent = 'تم تنزيل العروض بنجاح';
+                            showAlert('تم تنزيل العروض بنجاح', 'success');
+                        })
+                        .catch(error => {
+                            console.error('خطأ في تنزيل ملف Excel:', error);
+                            document.getElementById('status').textContent = 'حدث خطأ أثناء التصدير';
+                            showAlert('حدث خطأ أثناء تصدير العروض', 'error');
+                        });
+                }
+            })
+            .catch(error => {
+                console.error('خطأ في التحقق من ملف التصدير:', error);
+                // محاولة مباشرة للتنزيل
+                window.location.href = '/export';
+                setTimeout(() => {
+                    document.getElementById('status').textContent = 'تم طلب تصدير العروض';
+                }, 3000);
+            });
+    } else {
+        showAlert('لا توجد عروض عقارية للتصدير!', 'warning');
+    }
+});
+    
+    // نقطة نهاية للتحقق من وجود ملف التصدير
+     app.get('/check-export-file', (req, res) => {
+    const fileName = req.query.filtered === 'true' ? 'عروض_عقارية_مصفاة.xlsx' : 'عروض_عقارية.xlsx';
+    const filePath = path.join(downloadsFolder, fileName);
+    
+    if (fs.existsSync(filePath)) {
+        res.json({ exists: true, path: `/downloads/${fileName}` });
+    } else {
+        res.json({ exists: false });
+    }
+    });
+
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      if (confirm('هل أنت متأكد من رغبتك في مسح جميع العروض؟')) {
+        fetch('/api/clear').then(response => {
+          if (response.ok) {
+            showAlert('تم مسح جميع العروض بنجاح');
+          } else {
+            showAlert('حدث خطأ أثناء مسح العروض', 'error');
+          }
+        }).catch(err => {
+          showAlert('حدث خطأ أثناء مسح العروض', 'error');
+          console.error(err);
+        });
+      }
+    });
+
+    document.getElementById('history-btn').addEventListener('click', () => {
+      if (confirm('هل تريد فحص الرسائل السابقة في المجموعات؟ قد تستغرق هذه العملية بعض الوقت.')) {
+        document.getElementById('status').innerHTML = '<div class="loading"></div> جاري فحص المحفوظات...';
+        document.getElementById('history-btn').disabled = true;
+
+        fetch('/api/scan-history')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('history-btn').disabled = false;
+            if (data.success) {
+              document.getElementById('status').textContent = `تم العثور على ${data.count} رسالة عقارية من المحفوظات`;
+              showAlert(`تم العثور على ${data.count} رسالة عقارية من المحفوظات`, data.count > 0 ? 'success' : 'warning');
+            } else {
+              document.getElementById('status').textContent = 'حدث خطأ أثناء فحص المحفوظات';
+              showAlert('حدث خطأ أثناء فحص المحفوظات: ' + data.error, 'error');
+            }
+          })
+          .catch(err => {
+            document.getElementById('history-btn').disabled = false;
+            document.getElementById('status').textContent = 'حدث خطأ أثناء فحص المحفوظات';
+            showAlert('حدث خطأ أثناء فحص المحفوظات', 'error');
+            console.error(err);
+          });
+      }
+    });
+
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      if (confirm('هل تريد إعادة تشغيل الجلسة؟')) {
+        fetch('/api/restart-session')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              showAlert('تم إعادة الاتصال بنجاح. سيتم تحديث الصفحة الآن.');
+              setTimeout(() => location.reload(), 2000);
+            } else {
+              showAlert('فشل في إعادة الاتصال: ' + data.error, 'error');
+            }
+          })
+          .catch(err => {
+            showAlert('حدث خطأ أثناء محاولة إعادة الاتصال.', 'error');
+            console.error(err);
+          });
+      }
+    });
+    
+    // ربط زر إعادة توليد QR
+    document.getElementById('regenerate-qr-btn').addEventListener('click', regenerateQR);
+    
+    // أحداث التصفية
+    document.getElementById('filter-btn').addEventListener('click', () => {
+      document.getElementById('filter-dialog').classList.add('show');
+    });
+    
+    document.getElementById('close-dialog').addEventListener('click', () => {
+      document.getElementById('filter-dialog').classList.remove('show');
+    });
+    
+    document.getElementById('apply-filter').addEventListener('click', () => {
+      const offerType = document.getElementById('offer-type').value;
+      const propertyType = document.getElementById('property-type').value;
+      const location = document.getElementById('location').value;
+      const minPrice = document.getElementById('min-price').value;
+      const maxPrice = document.getElementById('max-price').value;
+      
+      let url = `/export?filtered=true`;
+      if (offerType) url += `&offerType=${encodeURIComponent(offerType)}`;
+      if (propertyType) url += `&propertyType=${encodeURIComponent(propertyType)}`;
+      if (location) url += `&location=${encodeURIComponent(location)}`;
+      if (minPrice) url += `&minPrice=${encodeURIComponent(minPrice)}`;
+      if (maxPrice) url += `&maxPrice=${encodeURIComponent(maxPrice)}`;
+      
+      window.location.href = url;
+      document.getElementById('filter-dialog').classList.remove('show');
+    });
+    
+    document.getElementById('reset-filter').addEventListener('click', () => {
+      document.getElementById('filter-form').reset();
+    });
+    
+    // أحداث النوافذ
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabId = tab.getAttribute('data-tab');
+        setActiveTab(tabId);
+      });
+    });
+    
+    // تحميل البيانات الأولية
+    document.addEventListener('DOMContentLoaded', () => {
+      // تحميل إحصائيات أنواع العقارات
+      fetchPropertyStats();
+      
+      // فحص رمز QR المباشر بعد 5 ثوانٍ
+      setTimeout(checkDirectQR, 5000);
+      
+      // فحص حالة رمز QR بشكل دوري
+      setInterval(() => {
+        if (!isConnected) {
+          fetch('/api/qr-status')
+            .then(res => res.json())
+            .then(data => {
+              const lastUpdateTime = new Date(data.lastUpdated);
+              const currentTime = new Date();
+              const timeDiff = (currentTime - lastUpdateTime) / 1000 / 60; // الفرق بالدقائق
+              
+              // إذا مر أكثر من 2 دقيقة على آخر تحديث لرمز QR
+              if (timeDiff > 2 && !data.isConnected && !qrCodeTimerInterval) {
+                document.getElementById('status').textContent = 'انتهت صلاحية رمز QR. انقر على زر "إعادة توليد" للحصول على رمز جديد.';
+                document.getElementById('regenerate-qr-btn').disabled = false;
+                
+                // تحديث عرض رمز QR المنتهي
+                document.getElementById('qrcode').innerHTML = `
+                  <div style="padding: 20px; text-align: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="15" y1="9" x2="9" y2="15"></line>
+                      <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    <p style="margin-top: 10px; color: #ff6b6b;">انتهت صلاحية رمز QR</p>
+                  </div>
+                `;
+              }
+            })
+            .catch(err => console.error('خطأ في فحص حالة رمز QR:', err));
+        }
+      }, 30000); // فحص كل 30 ثانية
+    });
+  </script>
